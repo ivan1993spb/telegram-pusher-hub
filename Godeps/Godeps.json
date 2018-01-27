@@ -1,0 +1,51 @@
+{
+	"ImportPath": "github.com/ivan1993spb/telegram-pusher-hub",
+	"GoVersion": "go1.8",
+	"GodepVersion": "v79",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/go-telegram-bot-api/telegram-bot-api",
+			"Comment": "v4.6.1-6-g5435d1d",
+			"Rev": "5435d1d8eaf19425b40aebf050f5fda3280c00cc"
+		},
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Rev": "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.1",
+			"Rev": "0eeaf8392f5b04950925b8a69fe70f110fa7cbfc"
+		},
+		{
+			"ImportPath": "github.com/sirupsen/logrus",
+			"Comment": "v1.0.4",
+			"Rev": "d682213848ed68c0a260ca37d6dd5ace8423f5ba"
+		},
+		{
+			"ImportPath": "github.com/technoweenie/multipartstreamer",
+			"Comment": "v1.0.1",
+			"Rev": "a90a01d73ae432e2611d178c18367fbaa13e0154"
+		},
+		{
+			"ImportPath": "github.com/urfave/negroni",
+			"Comment": "v0.2.0-46-g902d2a2",
+			"Rev": "902d2a2ec1dcb9ec3c5fde29917e1d2eceea2182"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/ssh/terminal",
+			"Rev": "0efb9460aaf800c6376acf625be2853bceac2e06"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/unix",
+			"Rev": "ff2a66f350cefa5c93a634eadb5d25bb60c85a9c"
+		},
+		{
+			"ImportPath": "golang.org/x/sys/windows",
+			"Rev": "ff2a66f350cefa5c93a634eadb5d25bb60c85a9c"
+		}
+	]
+}
