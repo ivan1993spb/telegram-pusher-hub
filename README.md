@@ -1,7 +1,7 @@
 
 # telegram-pusher-hub
 
-1. Create new bot using [@BotFather](t.me/BotFather)
+1. Create new bot using [@BotFather](http://t.me/BotFather)
 2. Create new channel
 3. Create bot to channel admins
 4. Start **telegram-pusher-hub**: `docker run --rm --net=host -e ADDRESS=:8080 -e CHANNEL_USERNAME=@<channel-username> -e TOKEN=<telegram-bot-token> ivan1993spb/telegram-pusher-hub`
