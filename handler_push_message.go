@@ -35,6 +35,8 @@ func NewPushMessageHandler(pusher PusherInterface, log *logrus.Logger) http.Hand
 }
 
 func (h *PushMessageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// TODO: Create secret api token.
+
 	text := r.PostFormValue(FieldText)
 	disableNotification, _ := strconv.ParseBool(r.PostFormValue(FieldDisableNotification))
 	disableWebPagePreview, _ := strconv.ParseBool(r.PostFormValue(FieldDisableWebPagePreview))
