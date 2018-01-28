@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"net/http"
+	"time"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/gorilla/mux"
@@ -18,12 +19,14 @@ var (
 	ChannelUsername string
 	ListenAddress   string
 	TelegramToken   string
+	SendingTimeout  time.Duration
 )
 
 func init() {
 	flag.StringVar(&ChannelUsername, "channel_username", "", "Channel username like @channel")
 	flag.StringVar(&ListenAddress, "listen_address", ":8080", "Address to serve")
 	flag.StringVar(&TelegramToken, "token", "", "Telegram token xxx:yyy")
+	flag.DurationVar(&SendingTimeout, "sending_timeout", time.Second, "Sending message timeout")
 	flag.Parse()
 }
 
@@ -32,8 +35,10 @@ func main() {
 	log.Infof("Starting pushing to channel %q", ChannelUsername)
 
 	bot := &tgbotapi.BotAPI{
-		Token:  TelegramToken,
-		Client: &http.Client{},
+		Token: TelegramToken,
+		Client: &http.Client{
+			Timeout: SendingTimeout,
+		},
 		Buffer: BotBuffer,
 	}
 
