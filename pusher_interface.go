@@ -1,5 +1,5 @@
 package main
 
 type PusherInterface interface {
-	Push(msg *Message)
+	Push(msg *Message) error
 }

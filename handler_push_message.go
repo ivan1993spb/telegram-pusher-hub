@@ -42,10 +42,14 @@ func (h *PushMessageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	disableWebPagePreview, _ := strconv.ParseBool(r.PostFormValue(FieldDisableWebPagePreview))
 	parseMode := GetParseMode(r.PostFormValue(FieldParseMode))
 
-	h.pusher.Push(&Message{
+	err := h.pusher.Push(&Message{
 		Text:                  text,
 		DisableNotification:   disableNotification,
 		DisableWebPagePreview: disableWebPagePreview,
 		ParseMode:             parseMode,
 	})
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusServiceUnavailable), http.StatusServiceUnavailable)
+		return
+	}
 }

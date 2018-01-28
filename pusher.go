@@ -1,23 +1,39 @@
 package main
 
-import "github.com/sirupsen/logrus"
+import (
+	"errors"
+	"time"
+
+	"github.com/sirupsen/logrus"
+)
 
 type Pusher struct {
-	ch     chan *Message
-	sender SenderInterface
-	log    *logrus.Logger
+	ch          chan *Message
+	sender      SenderInterface
+	log         *logrus.Logger
+	pushTimeout time.Duration
 }
 
-func NewPusher(cacheSize uint, sender SenderInterface, log *logrus.Logger) *Pusher {
+func NewPusher(cacheSize uint, sender SenderInterface, log *logrus.Logger, pushTimeout time.Duration) *Pusher {
 	return &Pusher{
-		ch:     make(chan *Message, cacheSize),
-		sender: sender,
-		log:    log,
+		ch:          make(chan *Message, cacheSize),
+		sender:      sender,
+		log:         log,
+		pushTimeout: pushTimeout,
 	}
 }
 
-func (p *Pusher) Push(msg *Message) {
-	p.ch <- msg
+func (p *Pusher) Push(msg *Message) error {
+	timer := time.NewTimer(p.pushTimeout)
+	defer timer.Stop()
+
+	select {
+	case p.ch <- msg:
+	case <-timer.C:
+		return errors.New("message pushing time is out")
+	}
+
+	return nil
 }
 
 func (p *Pusher) Run() {

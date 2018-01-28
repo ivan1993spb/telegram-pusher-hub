@@ -20,6 +20,7 @@ var (
 	ListenAddress   string
 	TelegramToken   string
 	SendingTimeout  time.Duration
+	PushingTimeout  time.Duration
 )
 
 func init() {
@@ -27,6 +28,7 @@ func init() {
 	flag.StringVar(&ListenAddress, "listen_address", ":8080", "Address to serve")
 	flag.StringVar(&TelegramToken, "token", "", "Telegram token xxx:yyy")
 	flag.DurationVar(&SendingTimeout, "sending_timeout", time.Second, "Sending message timeout")
+	flag.DurationVar(&PushingTimeout, "pushing_timeout", time.Second, "Pushing message in queue timeout")
 	flag.Parse()
 }
 
@@ -43,7 +45,7 @@ func main() {
 	}
 
 	sender := NewSender(bot, ChannelUsername)
-	pusher := NewPusher(CacheSize, sender, log)
+	pusher := NewPusher(CacheSize, sender, log, PushingTimeout)
 
 	n := negroni.Classic()
 	r := mux.NewRouter()
