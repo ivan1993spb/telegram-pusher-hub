@@ -1,8 +1,8 @@
 package main
 
 import (
+	"flag"
 	"net/http"
-	"os"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/gorilla/mux"
@@ -14,21 +14,30 @@ const CacheSize = 1024
 
 const BotBuffer = 100
 
-func main() {
-	channelUsername := os.Getenv("CHANNEL_USERNAME")
-	token := os.Getenv("TOKEN")
-	address := os.Getenv("ADDRESS")
+var (
+	ChannelUsername string
+	ListenAddress   string
+	TelegramToken   string
+)
 
+func init() {
+	flag.StringVar(&ChannelUsername, "channel_username", "", "Channel username like @channel")
+	flag.StringVar(&ListenAddress, "listen_address", ":8080", "Address to serve")
+	flag.StringVar(&TelegramToken, "token", "", "Telegram token xxx:yyy")
+	flag.Parse()
+}
+
+func main() {
 	log := logrus.New()
-	log.Info("Starting")
+	log.Infof("Starting pushing to channel %q", ChannelUsername)
 
 	bot := &tgbotapi.BotAPI{
-		Token:  token,
+		Token:  TelegramToken,
 		Client: &http.Client{},
 		Buffer: BotBuffer,
 	}
 
-	sender := NewSender(bot, channelUsername)
+	sender := NewSender(bot, ChannelUsername)
 	pusher := NewPusher(CacheSize, sender, log)
 
 	n := negroni.Classic()
@@ -42,5 +51,5 @@ func main() {
 
 	n.UseHandler(r)
 	go pusher.Run()
-	n.Run(address)
+	n.Run(ListenAddress)
 }
