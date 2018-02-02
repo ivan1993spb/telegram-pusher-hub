@@ -1,0 +1,55 @@
+swagger: '2.0'
+info:
+  title: Telegram pusher hub API
+  version: "0.0.0"
+host: localhost
+schemes:
+  - http
+  - https
+basePath: /api/v1
+produces:
+  - application/json
+paths:
+  /message:
+    post:
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: message
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Message'
+      responses:
+        200:
+          description: Message successfully created to queue
+        400:
+          description: Empty message text
+        401:
+          description: Unauthorized
+        # TODO: Add error 500?
+        503:
+          description: Message queue is full
+
+definitions:
+  Message:
+    type: object
+    required:
+      - text
+    properties:
+      text:
+        type: string
+        description: Message text
+      disable_notification:
+        type: boolean
+        description: Flag to disable notification when user receives message from channel
+        default: false
+      disable_webpage_preview:
+        description: Flag to disable webpage preview with link in massage
+        type: boolean
+        default: false
+      parse_mode:
+        type: string
+        description: Flag to configure message formatting type
+        enum: ["", "HTML", "Markdown"]
+        default: ""
